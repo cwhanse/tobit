@@ -137,7 +137,9 @@ class TobitModel:
         if self.fit_intercept:
             x_copy.insert(0, 'intercept', 1.0)
         else:
-            x_copy = scale(x_copy, with_mean=True, with_std=False, copy=False)
+            x_copy = pd.DataFrame(
+                data=scale(x_copy, with_mean=True, with_std=False, copy=False),
+                index = x.index)
         init_reg = LinearRegression(fit_intercept=False).fit(x_copy, y)
         b0 = init_reg.coef_
         y_pred = init_reg.predict(x_copy)
