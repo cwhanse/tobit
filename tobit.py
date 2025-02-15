@@ -8,6 +8,7 @@ import scipy.stats
 from scipy.special import log_ndtr
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.preprocessing import scale
 
 
 def split_left_right_censored(x, y, cens):
@@ -136,7 +137,7 @@ class TobitModel:
         if self.fit_intercept:
             x_copy.insert(0, 'intercept', 1.0)
         else:
-            x_copy.scale(with_mean=True, with_std=False, copy=False)
+            x_copy = scale(x_copy, with_mean=True, with_std=False, copy=False)
         init_reg = LinearRegression(fit_intercept=False).fit(x_copy, y)
         b0 = init_reg.coef_
         y_pred = init_reg.predict(x_copy)
